@@ -7,7 +7,7 @@
 		"start": "tsc && node js/app.js",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start:watch": "nodemon js/app.js",
-		"compile-watch": "sudo yarn tsc --p tsconfig.json -w"
+		"compile-watch": "yarn tsc --p tsconfig.json -w"
 	},
 	"keywords": [],
 	"author": "",
