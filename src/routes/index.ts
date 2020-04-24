@@ -35,15 +35,37 @@ function translate(naturalNumber: number) {
   if (decimalPlaces == 1) {
     numberTranslated = oneThroughNine(Number(naturalNumber));
   } else if (decimalPlaces == 2) {
-    let firstDigitTranslated = "";
-    const preLastDigit = Number(separatedDigits[0]);
-    const lastDigit = Number(separatedDigits[1]);
-    const preLastDigitTranslated = twoDigits(preLastDigit);
-    if (lastDigit == 0) {
+    const preLastDigitTranslated = twoDigits(Number(separatedDigits[0]));
+    if (Number(separatedDigits[1]) == 0) {
       numberTranslated = preLastDigitTranslated;
     } else {
-      const lastDigitTranslated = oneThroughNine(lastDigit);
+      const lastDigitTranslated = oneThroughNine(Number(separatedDigits[1]));
       numberTranslated = preLastDigitTranslated + "-" + lastDigitTranslated;
+    }
+  } else if (decimalPlaces == 3) {
+    const firstDigitTranslated = oneThroughNine(Number(separatedDigits[0]));
+    const preLastDigitTranslated = twoDigits(Number(separatedDigits[1]));
+    const lastDigitTranslated = oneThroughNine(Number(separatedDigits[2]));
+    if (Number(separatedDigits[2]) == 0 && Number(separatedDigits[1]) == 0) {
+      return firstDigitTranslated + " hundred ";
+    } else if (
+      Number(separatedDigits[2]) == 0 &&
+      Number(separatedDigits[1]) != 1
+    ) {
+      return firstDigitTranslated + " hundred " + preLastDigitTranslated;
+    } else if (Number(separatedDigits[1]) == 0) {
+      return firstDigitTranslated + " hundred " + lastDigitTranslated;
+    } else if (Number(separatedDigits[1]) == 1) {
+      const teens = tenThroughNineteen(Number(separatedDigits[2]));
+      return firstDigitTranslated + " hundred " + teens;
+    } else {
+      return (
+        firstDigitTranslated +
+        " hundred " +
+        preLastDigitTranslated +
+        "-" +
+        lastDigitTranslated
+      );
     }
   }
 
@@ -174,122 +196,6 @@ function twoDigits(preLastDigit: number) {
 export default routes;
 
 /* 
-
-switch (naturalNumber) {
-    case 0:
-      numberTranslated = "zero";
-      break;
-    case 1:
-      numberTranslated = "one";
-      break;
-    case 2:
-      numberTranslated = "two";
-      break;
-    case 3:
-      numberTranslated = "three";
-      break;
-    case 4:
-      numberTranslated = "four";
-      break;
-    case 5:
-      numberTranslated = "five";
-      break;
-    case 6:
-      numberTranslated = "six";
-      break;
-    case 7:
-      numberTranslated = "seven";
-      break;
-    case 8:
-      numberTranslated = "eight";
-      break;
-    case 9:
-      numberTranslated = "nine";
-      break;
-    case 10:
-      numberTranslated = "ten";
-      break;
-    case 11:
-      numberTranslated = "eleven";
-      break;
-    case 12:
-      numberTranslated = "twelve";
-      break;
-    case 13:
-      numberTranslated = "thirteen";
-      break;
-    case 14:
-      numberTranslated = "fourteen";
-      break;
-    case 15:
-      numberTranslated = "fifteen";
-      break;
-    case 16:
-      numberTranslated = "sixteen";
-      break;
-    case 17:
-      numberTranslated = "seventeen";
-      break;
-    case 18:
-      numberTranslated = "eighteen";
-      break;
-    case 19:
-      numberTranslated = "nineteen";
-      break;
-    case 20:
-      numberTranslated = "twenty";
-      break;
-    case 21:
-      numberTranslated = "twenty-one";
-      break;
-    case 22:
-      numberTranslated = "twenty-two";
-      break;
-    case 23:
-      numberTranslated = "twenty-three";
-      break;
-    case 24:
-      numberTranslated = "twenty-four";
-      break;
-    case 25:
-      numberTranslated = "twenty-five";
-      break;
-    case 26:
-      numberTranslated = "twenty-six";
-      break;
-    case 27:
-      numberTranslated = "twenty-seven";
-      break;
-    case 28:
-      numberTranslated = "twenty-eight";
-      break;
-    case 29:
-      numberTranslated = "twenty-nine";
-      break;
-    case 30:
-      numberTranslated = "thirty";
-      break;
-    case 31:
-      numberTranslated = "thirty-one";
-      break;
-    case 40:
-      numberTranslated = "forty";
-      break;
-    case 50:
-      numberTranslated = "fifty";
-      break;
-    case 60:
-      numberTranslated = "sixty";
-      break;
-    case 70:
-      numberTranslated = "seventy";
-      break;
-    case 80:
-      numberTranslated = "eighty";
-      break;
-    case 90:
-      numberTranslated = "ninety";
-      break;
     case 100:
       numberTranslated = "one hundred";
       break;
