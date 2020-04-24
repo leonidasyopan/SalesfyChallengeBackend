@@ -5,7 +5,6 @@ const routes = Router();
 routes.post("/", (request, response) => {
   // Store the natural number sent by the user
   const naturalNumber = request.query.translate;
-  console.log(naturalNumber);
 
   // Access the translate functions responsible for giruing out
   // how to translate the number properly
@@ -23,118 +22,67 @@ function translate(naturalNumber: number) {
 
   let decimalPlaces = separatedDigits.length;
 
-  switch (decimalPlaces) {
-    case 1:
-      switch (naturalNumber) {
-        case 0:
-          numberTranslated = "zero";
-          break;
-        case 1:
-          numberTranslated = "one";
-          break;
-        case 2:
-          numberTranslated = "two";
-          break;
-        case 3:
-          numberTranslated = "three";
-          break;
-        case 4:
-          numberTranslated = "four";
-          break;
-        case 5:
-          numberTranslated = "five";
-          break;
-        case 6:
-          numberTranslated = "six";
-          break;
-        case 7:
-          numberTranslated = "seven";
-          break;
-        case 8:
-          numberTranslated = "eight";
-          break;
-        case 9:
-          numberTranslated = "nine";
-          break;
-        default:
-          numberTranslated = "Sorry, couldn't handle this number";
-          break;
-      }
-      break;
-    case 2:
-      let firstDigitTranslated = "";
-      const firstDigit = Number(separatedDigits[0]);
-      const lastDigit = Number(separatedDigits[1]);
-      switch (firstDigit) {
-        case 1:
-          firstDigitTranslated = "one";
-          break;
-        case 2:
-          firstDigitTranslated = "twenty";
-          break;
-        case 3:
-          firstDigitTranslated = "thirty";
-          break;
-        case 4:
-          firstDigitTranslated = "fourty";
-          break;
-        case 5:
-          firstDigitTranslated = "fifty";
-          break;
-        case 6:
-          firstDigitTranslated = "sixty";
-          break;
-        case 7:
-          firstDigitTranslated = "seventy";
-          break;
-        case 8:
-          firstDigitTranslated = "eighty";
-          break;
-        case 9:
-          firstDigitTranslated = "ninety";
-          break;
-        default:
-          firstDigitTranslated = "Sorry, couldn't handle this number";
-          break;
-      }
-      const lastDigitTranslated = oneThroughNince(lastDigit);
-      numberTranslated = firstDigitTranslated + lastDigitTranslated;
-      break;
+  if (naturalNumber == 0) {
+    numberTranslated = "zero";
+    return numberTranslated;
+  }
+
+  if (naturalNumber >= 10 && naturalNumber <= 19) {
+    numberTranslated = tenThroughNineteen(Number(naturalNumber));
+    return numberTranslated;
+  }
+
+  if (decimalPlaces == 1) {
+    numberTranslated = oneThroughNine(Number(naturalNumber));
+  } else if (decimalPlaces == 2) {
+    let firstDigitTranslated = "";
+    const preLastDigit = Number(separatedDigits[0]);
+    const lastDigit = Number(separatedDigits[1]);
+    const preLastDigitTranslated = twoDigits(preLastDigit);
+    if (lastDigit == 0) {
+      numberTranslated = preLastDigitTranslated;
+    } else {
+      const lastDigitTranslated = oneThroughNine(lastDigit);
+      numberTranslated = preLastDigitTranslated + "-" + lastDigitTranslated;
+    }
   }
 
   return numberTranslated;
 }
 
-function oneThroughNince(lastDigit: number) {
+function oneThroughNine(lastDigit: number) {
   let lastDigitTranslated = "";
 
   switch (lastDigit) {
+    case 0:
+      lastDigitTranslated = "";
+      break;
     case 1:
-      lastDigitTranslated = "-one";
+      lastDigitTranslated = "one";
       break;
     case 2:
-      lastDigitTranslated = "-two";
+      lastDigitTranslated = "two";
       break;
     case 3:
-      lastDigitTranslated = "-three";
+      lastDigitTranslated = "three";
       break;
     case 4:
-      lastDigitTranslated = "-four";
+      lastDigitTranslated = "four";
       break;
     case 5:
-      lastDigitTranslated = "-five";
+      lastDigitTranslated = "five";
       break;
     case 6:
-      lastDigitTranslated = "-six";
+      lastDigitTranslated = "six";
       break;
     case 7:
-      lastDigitTranslated = "-seven";
+      lastDigitTranslated = "seven";
       break;
     case 8:
-      lastDigitTranslated = "-eight";
+      lastDigitTranslated = "eight";
       break;
     case 9:
-      lastDigitTranslated = "-nine";
+      lastDigitTranslated = "nine";
       break;
     default:
       lastDigitTranslated = "";
@@ -142,6 +90,85 @@ function oneThroughNince(lastDigit: number) {
   }
 
   return lastDigitTranslated;
+}
+
+function tenThroughNineteen(lastDigit: number) {
+  let lastDigitTranslated = "";
+
+  switch (lastDigit) {
+    case 10:
+      lastDigitTranslated = "ten";
+      break;
+    case 11:
+      lastDigitTranslated = "eleven";
+      break;
+    case 12:
+      lastDigitTranslated = "twelve";
+      break;
+    case 13:
+      lastDigitTranslated = "thirteen";
+      break;
+    case 14:
+      lastDigitTranslated = "fourteen";
+      break;
+    case 15:
+      lastDigitTranslated = "fifteen";
+      break;
+    case 16:
+      lastDigitTranslated = "sixteen";
+      break;
+    case 17:
+      lastDigitTranslated = "seventeen";
+      break;
+    case 18:
+      lastDigitTranslated = "eighteen";
+      break;
+    case 19:
+      lastDigitTranslated = "nineteen";
+      break;
+    default:
+      lastDigitTranslated = "";
+      break;
+  }
+
+  return lastDigitTranslated;
+}
+
+function twoDigits(preLastDigit: number) {
+  let preLastDigitTranslated = "";
+  switch (preLastDigit) {
+    case 1:
+      preLastDigitTranslated = "one";
+      break;
+    case 2:
+      preLastDigitTranslated = "twenty";
+      break;
+    case 3:
+      preLastDigitTranslated = "thirty";
+      break;
+    case 4:
+      preLastDigitTranslated = "fourty";
+      break;
+    case 5:
+      preLastDigitTranslated = "fifty";
+      break;
+    case 6:
+      preLastDigitTranslated = "sixty";
+      break;
+    case 7:
+      preLastDigitTranslated = "seventy";
+      break;
+    case 8:
+      preLastDigitTranslated = "eighty";
+      break;
+    case 9:
+      preLastDigitTranslated = "ninety";
+      break;
+    default:
+      preLastDigitTranslated = "Sorry, couldn't handle this number";
+      break;
+  }
+  return preLastDigitTranslated;
 }
 
 export default routes;
