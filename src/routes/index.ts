@@ -18,25 +18,38 @@ routes.post("/", (request, response) => {
 function translate(naturalNumber: number) {
   let numberTranslated = "";
 
-  let separatedDigits = ("" + naturalNumber).split("");
+  const separatedDigits = ("" + naturalNumber).split("");
 
-  let decimalPlaces = separatedDigits.length;
+  const decimalPlaces = separatedDigits.length;
 
   if (naturalNumber === 0) {
     numberTranslated = "zero";
     return numberTranslated;
   }
 
+  // let i,
+  //   j,
+  //   hundredHouses,
+  //   parts = 3;
+  // for (i = 0, j = decimalPlaces; i < j; i += parts) {
+  //   hundredHouses = separatedDigits.slice(i, i + parts);
+
+  // }
+
+  let hundredTranslated = "";
+
   for (let i = 1; i <= decimalPlaces; i++) {
     const lastDigit = separatedDigits[decimalPlaces - 1];
     const decimalDigit = separatedDigits[decimalPlaces - 2];
     const hundredthDigit = separatedDigits[decimalPlaces - 3];
     const lastTwoDigitsTogether =
-      decimalPlaces < 2 ? Number(lastDigit) : Number(decimalDigit + lastDigit);
+      decimalPlaces == 1 ? Number(lastDigit) : Number(decimalDigit + lastDigit);
     let lastTwoDigitsTranslated = "";
 
     if (lastTwoDigitsTogether >= 1 && lastTwoDigitsTogether <= 19) {
-      lastTwoDigitsTranslated = oneThroughNineTeen(Number(naturalNumber));
+      lastTwoDigitsTranslated = oneThroughNineTeen(
+        Number(lastTwoDigitsTogether)
+      );
     } else {
       const decimalDigitTranslated = twoDigits(Number(decimalDigit));
       const lastDigitTranslated = oneThroughNineTeen(Number(lastDigit));
@@ -48,13 +61,13 @@ function translate(naturalNumber: number) {
 
     const hundredthDigitTranslated = oneThroughNineTeen(Number(hundredthDigit));
 
-    numberTranslated =
+    hundredTranslated =
       decimalPlaces < 3
         ? lastTwoDigitsTranslated
-        : hundredthDigitTranslated + " hundred " + lastDigit;
+        : hundredthDigitTranslated + " hundred " + lastTwoDigitsTranslated;
   }
 
-  return numberTranslated;
+  return hundredTranslated;
 }
 
 function oneThroughNineTeen(lastDigit: number) {
