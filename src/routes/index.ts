@@ -20,6 +20,18 @@ function translate(naturalNumber: number) {
 
   const separatedDigits = ("" + naturalNumber).split("");
 
+  const extraDigits = [];
+
+  if (separatedDigits.length > 3 && separatedDigits.length % 3) {
+    const extraHouses = separatedDigits.length % 3;
+    for (let i = 0; i < extraHouses; i++) {
+      extraDigits.push(separatedDigits[i]);
+    }
+    for (let i = 0; i < extraHouses; i++) {
+      separatedDigits.shift();
+    }
+  }
+
   const decimalPlaces = separatedDigits.length;
 
   if (naturalNumber === 0) {
@@ -42,9 +54,9 @@ function translate(naturalNumber: number) {
     let hundredTranslated = "";
 
     for (let i = 1; i <= item.length; i++) {
-      const lastDigit = item[2];
-      const decimalDigit = item[1];
-      const hundredthDigit = item[0];
+      const lastDigit = item[item.length - 1];
+      const decimalDigit = item[item.length - 2];
+      const hundredthDigit = item[item.length - 3];
       const lastTwoDigitsTogether =
         decimalPlaces == 1
           ? Number(lastDigit)
@@ -109,6 +121,10 @@ function translate(naturalNumber: number) {
   //       ? lastTwoDigitsTranslated
   //       : hundredthDigitTranslated + " hundred " + lastTwoDigitsTranslated;
   // }
+
+  for (let i = 0; i < wholeNumberInParts.length; i++) {
+    numberTranslated += wholeNumberInParts[i] + " ";
+  }
 
   return numberTranslated;
 }
@@ -217,29 +233,3 @@ function twoDigits(preLastDigit: number) {
 }
 
 export default routes;
-
-/* 
-    case 100:
-      numberTranslated = "one hundred";
-      break;
-    case 500:
-      numberTranslated = "five hundred";
-      break;
-    case 1000:
-      numberTranslated = "one thousand";
-      break;
-    case 1500:
-      numberTranslated = "one thousand five hundred, or fifteen hundred";
-      break;
-    case 100000:
-      numberTranslated = "one hundred thousand";
-      break;
-    case 1000000:
-      numberTranslated = "one million";
-      break;
-    default:
-      numberTranslated = "Sorry, couldn't handle this number";
-      break;
-  }
-
-*/
