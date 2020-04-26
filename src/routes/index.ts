@@ -31,8 +31,6 @@ function translate(naturalNumber: number) {
     }
   }
 
-  const decimalPlaces = separatedDigits.length;
-
   if (naturalNumber === 0) {
     numberTranslated = "zero";
     return numberTranslated;
@@ -44,12 +42,16 @@ function translate(naturalNumber: number) {
     j,
     hundredHouses,
     parts = 3;
-  for (i = 0, j = decimalPlaces; i < j; i += parts) {
+  for (i = 0, j = separatedDigits.length; i < j; i += parts) {
     hundredHouses = separatedDigits.slice(i, i + parts);
     arrayOfParts.push(hundredHouses);
   }
 
-  let wholeNumberInParts = hundredToString(arrayOfParts);
+  let wholeNumberInParts = arrayOfParts.map((item) => {
+    return hundredToString(item);
+  });
+
+  console.log(wholeNumberInParts);
 
   const extraDigistsTogether = hundredToString(extraDigits);
 
@@ -60,6 +62,47 @@ function translate(naturalNumber: number) {
   }
 
   return numberTranslated;
+}
+
+function hundredToString(arrayOfParts: Array<string>) {
+  // let wholeNumberInParts = arrayOfParts.map((item) => {
+  let hundredTranslated = "";
+
+  for (let i = 1; i <= arrayOfParts.length; i++) {
+    const lastDigit = arrayOfParts[arrayOfParts.length - 1];
+    const decimalDigit = arrayOfParts[arrayOfParts.length - 2];
+    const hundredthDigit = arrayOfParts[arrayOfParts.length - 3];
+    const lastTwoDigitsTogether =
+      arrayOfParts.length == 1
+        ? Number(lastDigit)
+        : Number(decimalDigit + lastDigit);
+    let lastTwoDigitsTranslated = "";
+
+    if (lastTwoDigitsTogether >= 1 && lastTwoDigitsTogether <= 19) {
+      lastTwoDigitsTranslated = oneThroughNineTeen(
+        Number(lastTwoDigitsTogether)
+      );
+    } else {
+      const decimalDigitTranslated = twoDigits(Number(decimalDigit));
+      const lastDigitTranslated = oneThroughNineTeen(Number(lastDigit));
+      lastTwoDigitsTranslated =
+        Number(lastDigit) == 0
+          ? decimalDigitTranslated
+          : decimalDigitTranslated + "-" + lastDigitTranslated;
+    }
+
+    const hundredthDigitTranslated = oneThroughNineTeen(Number(hundredthDigit));
+
+    hundredTranslated =
+      arrayOfParts.length < 3
+        ? lastTwoDigitsTranslated
+        : hundredthDigitTranslated + " hundred " + lastTwoDigitsTranslated;
+  }
+
+  return hundredTranslated;
+  // });
+
+  // return wholeNumberInParts;
 }
 
 function oneThroughNineTeen(lastDigit: number) {
@@ -163,47 +206,6 @@ function twoDigits(preLastDigit: number) {
       break;
   }
   return result;
-}
-
-function hundredToString(arrayOfParts) {
-  let wholeNumberInParts = arrayOfParts.map((item) => {
-    let hundredTranslated = "";
-
-    for (let i = 1; i <= item.length; i++) {
-      const lastDigit = item[item.length - 1];
-      const decimalDigit = item[item.length - 2];
-      const hundredthDigit = item[item.length - 3];
-      const lastTwoDigitsTogether =
-        item.length == 1 ? Number(lastDigit) : Number(decimalDigit + lastDigit);
-      let lastTwoDigitsTranslated = "";
-
-      if (lastTwoDigitsTogether >= 1 && lastTwoDigitsTogether <= 19) {
-        lastTwoDigitsTranslated = oneThroughNineTeen(
-          Number(lastTwoDigitsTogether)
-        );
-      } else {
-        const decimalDigitTranslated = twoDigits(Number(decimalDigit));
-        const lastDigitTranslated = oneThroughNineTeen(Number(lastDigit));
-        lastTwoDigitsTranslated =
-          Number(lastDigit) == 0
-            ? decimalDigitTranslated
-            : decimalDigitTranslated + "-" + lastDigitTranslated;
-      }
-
-      const hundredthDigitTranslated = oneThroughNineTeen(
-        Number(hundredthDigit)
-      );
-
-      hundredTranslated =
-        item.length < 3
-          ? lastTwoDigitsTranslated
-          : hundredthDigitTranslated + " hundred " + lastTwoDigitsTranslated;
-    }
-
-    return hundredTranslated;
-  });
-
-  return wholeNumberInParts;
 }
 
 export default routes;
