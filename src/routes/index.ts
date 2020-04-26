@@ -15,11 +15,43 @@ routes.post("/", (request, response) => {
 });
 
 function translate(naturalNumber: number) {
+  // Creates an empty variable to store the translation in the end
   let numberTranslated = "";
 
+  // Separate each digit of the number and store all of them in order
+  // in a Array.
   const separatedDigits = ("" + naturalNumber).split("");
 
+  // Declare and empty variable for storing the extra digits from groups
+  // of hundreds. Example, if I have 1234 or 1234234, the two pairs of
+  // 234 are going to be translated using the same pattern (trios/hundreds)
+  // but the 1 is extra, meaning it's translated differently.
   const extraDigits = [];
+
+  const keyWords = [
+    "thousand",
+    "million",
+    "million",
+    "trillion",
+    "quadrillion",
+    "quintillion",
+    "sextillion",
+    "qeptillion",
+    "octillion",
+    "nonillion",
+    "decillion",
+    "undecillion",
+    "duodecillion",
+    "tredecillion",
+    "quattuordecillion",
+    "quindecillion",
+    "sexdecillion",
+    "septendecillion",
+    "octodecillion",
+    "novemdecillion",
+    "vigintillion",
+    "centillion",
+  ];
 
   if (separatedDigits.length > 3 && separatedDigits.length % 3) {
     const extraHouses = separatedDigits.length % 3;
@@ -51,11 +83,10 @@ function translate(naturalNumber: number) {
     return hundredToString(item);
   });
 
-  console.log(wholeNumberInParts);
-
   const extraDigistsTogether = hundredToString(extraDigits);
 
-  numberTranslated += extraDigistsTogether;
+  numberTranslated +=
+    extraDigistsTogether + " " + keyWords[arrayOfParts.length] + " ";
 
   for (let i = 0; i < wholeNumberInParts.length; i++) {
     numberTranslated += wholeNumberInParts[i] + " ";
@@ -65,7 +96,6 @@ function translate(naturalNumber: number) {
 }
 
 function hundredToString(arrayOfParts: Array<string>) {
-  // let wholeNumberInParts = arrayOfParts.map((item) => {
   let hundredTranslated = "";
 
   for (let i = 1; i <= arrayOfParts.length; i++) {
@@ -100,9 +130,6 @@ function hundredToString(arrayOfParts: Array<string>) {
   }
 
   return hundredTranslated;
-  // });
-
-  // return wholeNumberInParts;
 }
 
 function oneThroughNineTeen(lastDigit: number) {
