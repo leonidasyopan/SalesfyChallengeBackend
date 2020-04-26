@@ -29,9 +29,10 @@ function translate(naturalNumber: number) {
   const extraDigits = [];
 
   const keyWords = [
+    "",
     "thousand",
     "million",
-    "million",
+    "billion",
     "trillion",
     "quadrillion",
     "quintillion",
@@ -85,11 +86,21 @@ function translate(naturalNumber: number) {
 
   const extraDigistsTogether = hundredToString(extraDigits);
 
-  numberTranslated +=
-    extraDigistsTogether + " " + keyWords[arrayOfParts.length] + " ";
+  if (naturalNumber <= 999) {
+    for (let i = 0; i < wholeNumberInParts.length; i++) {
+      numberTranslated += wholeNumberInParts[i] + " ";
+    }
+  } else {
+    numberTranslated +=
+      extraDigistsTogether + " " + keyWords[arrayOfParts.length] + " ";
 
-  for (let i = 0; i < wholeNumberInParts.length; i++) {
-    numberTranslated += wholeNumberInParts[i] + " ";
+    for (let i = 0; i < wholeNumberInParts.length; i++) {
+      numberTranslated +=
+        wholeNumberInParts[i] +
+        " " +
+        keyWords[arrayOfParts.length - (i + 1)] +
+        " ";
+    }
   }
 
   return numberTranslated;
