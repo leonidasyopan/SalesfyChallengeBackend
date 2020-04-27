@@ -18,6 +18,12 @@ function translate(naturalNumber: number) {
   // Creates an empty variable to store the translation in the end
   let numberTranslated = "";
 
+  // Zero is a very unique situation
+  if (naturalNumber === 0) {
+    numberTranslated = "zero";
+    return numberTranslated;
+  }
+
   // Separate each digit of the number and store all of them in order
   // in a Array.
   const separatedDigits = ("" + naturalNumber).split("");
@@ -64,11 +70,6 @@ function translate(naturalNumber: number) {
     }
   }
 
-  if (naturalNumber === 0) {
-    numberTranslated = "zero";
-    return numberTranslated;
-  }
-
   let arrayOfParts = [];
 
   let i,
@@ -85,6 +86,13 @@ function translate(naturalNumber: number) {
   });
 
   const extraDigistsTogether = hundredToString(extraDigits);
+
+  if (naturalNumber > 999 && naturalNumber % 100 == 0) {
+    numberTranslated =
+      extraDigistsTogether + " " + keyWords[arrayOfParts.length - 1];
+    console.log(extraDigistsTogether);
+    return numberTranslated;
+  }
 
   if (naturalNumber <= 999) {
     for (let i = 0; i < wholeNumberInParts.length; i++) {
