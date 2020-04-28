@@ -82,7 +82,12 @@ function translate(naturalNumber: number) {
   }
 
   let wholeNumberInParts = arrayOfParts.map((item) => {
-    return hundredToString(item);
+    let usefulTrio = "";
+    const convertedTrio = hundredToString(item);
+    if (convertedTrio !== " hundred") {
+      usefulTrio = convertedTrio;
+    }
+    return usefulTrio;
   });
 
   const extraDigistsTogether = hundredToString(extraDigits);
@@ -90,9 +95,6 @@ function translate(naturalNumber: number) {
   if (naturalNumber > 999 && naturalNumber % 100 == 0) {
     numberTranslated =
       extraDigistsTogether + " " + keyWords[arrayOfParts.length];
-    console.log(extraDigistsTogether);
-    console.log(arrayOfParts.length);
-    console.log(keyWords[arrayOfParts.length - 1]);
     return numberTranslated;
   }
 
@@ -105,11 +107,11 @@ function translate(naturalNumber: number) {
       extraDigistsTogether + " " + keyWords[arrayOfParts.length] + " ";
 
     for (let i = 0; i < wholeNumberInParts.length; i++) {
-      numberTranslated += wholeNumberInParts[i];
-      // +
-      // " " +
-      // keyWords[arrayOfParts.length - (i + 1)] +
-      // " ";
+      numberTranslated +=
+        wholeNumberInParts[i] +
+        " " +
+        keyWords[arrayOfParts.length - (i + 1)] +
+        " ";
     }
   }
 
