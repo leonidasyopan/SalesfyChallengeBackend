@@ -84,7 +84,7 @@ function translate(naturalNumber: number) {
   let wholeNumberInParts = arrayOfParts.map((item) => {
     let usefulTrio = "";
     const convertedTrio = hundredToString(item);
-    if (convertedTrio !== " hundred") {
+    if (convertedTrio !== " hundred ") {
       usefulTrio = convertedTrio;
     }
     return usefulTrio;
@@ -92,26 +92,44 @@ function translate(naturalNumber: number) {
 
   const extraDigistsTogether = hundredToString(extraDigits);
 
-  if (naturalNumber > 999 && naturalNumber % 100 == 0) {
+  if (
+    naturalNumber > 999 &&
+    naturalNumber % 100 === 0 &&
+    separatedDigits.length % 3 === 0
+  ) {
+    numberTranslated =
+      wholeNumberInParts[0] + " " + keyWords[arrayOfParts.length];
+    console.log(numberTranslated + "first");
+    return numberTranslated;
+  }
+
+  if (naturalNumber > 999 && naturalNumber % 100 === 0) {
     numberTranslated =
       extraDigistsTogether + " " + keyWords[arrayOfParts.length];
+    console.log(numberTranslated + "second");
     return numberTranslated;
   }
 
   if (naturalNumber <= 999) {
     for (let i = 0; i < wholeNumberInParts.length; i++) {
-      numberTranslated += wholeNumberInParts[i] + " ";
+      numberTranslated += wholeNumberInParts[i];
     }
   } else {
     numberTranslated +=
-      extraDigistsTogether + " " + keyWords[arrayOfParts.length] + " ";
+      extraDigistsTogether.length == 0
+        ? ""
+        : extraDigistsTogether + " " + keyWords[arrayOfParts.length] + " ";
 
     for (let i = 0; i < wholeNumberInParts.length; i++) {
-      numberTranslated +=
-        wholeNumberInParts[i] +
-        " " +
-        keyWords[arrayOfParts.length - (i + 1)] +
-        " ";
+      if (wholeNumberInParts[i] === "" || wholeNumberInParts.length == 0) {
+        numberTranslated += "";
+      } else {
+        numberTranslated +=
+          wholeNumberInParts[i] +
+          " " +
+          keyWords[arrayOfParts.length - (i + 1)] +
+          " ";
+      }
     }
   }
 
@@ -146,10 +164,17 @@ function hundredToString(arrayOfParts: Array<string>) {
 
     const hundredthDigitTranslated = oneThroughNineTeen(Number(hundredthDigit));
 
-    hundredTranslated =
-      arrayOfParts.length < 3
-        ? lastTwoDigitsTranslated
-        : hundredthDigitTranslated + " hundred " + lastTwoDigitsTranslated;
+    if (arrayOfParts.length < 3) {
+      hundredTranslated = lastTwoDigitsTranslated;
+    } else if (
+      hundredthDigitTranslated === "" ||
+      hundredthDigitTranslated.length == 0
+    ) {
+      hundredTranslated = lastTwoDigitsTranslated;
+    } else {
+      hundredTranslated =
+        hundredthDigitTranslated + " hundred " + lastTwoDigitsTranslated;
+    }
   }
 
   return hundredTranslated;
