@@ -89,8 +89,10 @@ function translate(naturalNumber: number) {
 
   if (naturalNumber > 999 && naturalNumber % 100 == 0) {
     numberTranslated =
-      extraDigistsTogether + " " + keyWords[arrayOfParts.length - 1];
+      extraDigistsTogether + " " + keyWords[arrayOfParts.length];
     console.log(extraDigistsTogether);
+    console.log(arrayOfParts.length);
+    console.log(keyWords[arrayOfParts.length - 1]);
     return numberTranslated;
   }
 
@@ -103,11 +105,11 @@ function translate(naturalNumber: number) {
       extraDigistsTogether + " " + keyWords[arrayOfParts.length] + " ";
 
     for (let i = 0; i < wholeNumberInParts.length; i++) {
-      numberTranslated +=
-        wholeNumberInParts[i] +
-        " " +
-        keyWords[arrayOfParts.length - (i + 1)] +
-        " ";
+      numberTranslated += wholeNumberInParts[i];
+      // +
+      // " " +
+      // keyWords[arrayOfParts.length - (i + 1)] +
+      // " ";
     }
   }
 
