@@ -2,7 +2,7 @@ import { Router } from "express";
 
 const routes = Router();
 
-routes.post("/", (request, response) => {
+routes.get("/", (request, response) => {
   // Store the natural number sent by the user
   const naturalNumber = request.query.translate;
 
