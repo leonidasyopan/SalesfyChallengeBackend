@@ -118,8 +118,9 @@ function translate(naturalNumber: number) {
   const naturalNumberString = naturalNumber.toString();
   let occurrencesOfZero = naturalNumberString.match(/0/g);
 
-  // If this is the case (only 0 after the first character) and the number is 1000
-  // or more, it will not need to compute anything. Just add the keyword to the end
+  // If this is the case (only 0 after the first character) AND the number is 1000
+  // or more AND the number of digits IS divided by 3 , it will not need
+  // to compute anything. Just add the keyword to the end
   if (
     naturalNumber >= 999 &&
     occurrencesOfZero?.length === naturalNumberString.length - 1 &&
@@ -128,6 +129,8 @@ function translate(naturalNumber: number) {
     return "one hundred " + keyWords[arrayOfParts.length - 1];
   }
 
+  // Similar case to previous one, but this one is for the cases where the number
+  // of digits IS NOT divided by 3
   if (
     naturalNumber > 999 &&
     occurrencesOfZero?.length === naturalNumberString.length - 1
@@ -137,16 +140,20 @@ function translate(naturalNumber: number) {
     return numberTranslated;
   }
 
+  // Here I'm checking whether the number is bigger or smaller than 999
+  // If it's smaller I won't need to concatenate any keywords
   if (naturalNumber <= 999) {
     for (let i = 0; i < wholeNumberInParts.length; i++) {
       numberTranslated += wholeNumberInParts[i];
     }
+    // ELSE, I will need to add the keywords to the trios of translated numbers
   } else {
     numberTranslated +=
       extraDigistsTogether.length == 0
         ? ""
         : extraDigistsTogether + " " + keyWords[arrayOfParts.length] + " ";
 
+    // this is the loop that allows adding as many keywords as necssary.
     for (let i = 0; i < wholeNumberInParts.length; i++) {
       if (wholeNumberInParts[i] === "" || wholeNumberInParts.length == 0) {
         numberTranslated += "";
@@ -159,27 +166,46 @@ function translate(naturalNumber: number) {
       }
     }
   }
-
+  // Here I return the complete translated word after all
+  // the necessary concatenation
   return numberTranslated;
 }
 
+// This is the most important function in the transtalion
+// it receisves an array with a trio of numbers and
+// and translates it following many specific rules
 function hundredToString(arrayOfParts: Array<string>) {
   let hundredTranslated = "";
 
+  // Everything happens inside the loop
   for (let i = 1; i <= arrayOfParts.length; i++) {
+    // first I separate the trio and store each one in a variable
     const lastDigit = arrayOfParts[arrayOfParts.length - 1];
     const decimalDigit = arrayOfParts[arrayOfParts.length - 2];
     const hundredthDigit = arrayOfParts[arrayOfParts.length - 3];
+
+    // the decimal digits (10, 12, 21, 46, etc...) are the most
+    // important and complicaded part. These are the rules:
+
+    // Here I concatenate them into a pair (since they came)
+    //  separated within the array.
     const lastTwoDigitsTogether =
       arrayOfParts.length == 1
         ? Number(lastDigit)
         : Number(decimalDigit + lastDigit);
+
+    // This variable only waits for the translation
     let lastTwoDigitsTranslated = "";
 
+    // This part translates the unique numbers that have specific
+    // translations (1 through 19). They are unique words.
     if (lastTwoDigitsTogether >= 1 && lastTwoDigitsTogether <= 19) {
       lastTwoDigitsTranslated = oneThroughNineTeen(
         Number(lastTwoDigitsTogether)
       );
+      // If the number is big than 20. We have the first part that is
+      // not unique (20, 21,..., 30, 31,..., 40, 41, .. etc)
+      // and the second part that is unique the 1-9 part
     } else {
       const decimalDigitTranslated = twoDigits(Number(decimalDigit));
       const lastDigitTranslated = oneThroughNineTeen(Number(lastDigit));
@@ -189,24 +215,34 @@ function hundredToString(arrayOfParts: Array<string>) {
           : decimalDigitTranslated + "-" + lastDigitTranslated;
     }
 
+    // This part is very simple. Here we translated the hundreth number
+    // If we have 123, for example. We simply translate 1 to one.
     const hundredthDigitTranslated = oneThroughNineTeen(Number(hundredthDigit));
 
+    // This is an extra test before adding the word "hundred". We test for the cases
+    // where we have numbers smaller than 100 - these don't need "hundred".
     if (arrayOfParts.length < 3) {
       hundredTranslated = lastTwoDigitsTranslated;
+      // This is another extra rule for the trios of numbers that are composed
+      // of only 000. In numbers like 100,000 we receive such a case.
     } else if (
       hundredthDigitTranslated === "" ||
       hundredthDigitTranslated.length == 0
     ) {
       hundredTranslated = lastTwoDigitsTranslated;
+      // This is the most common case, where we DO need to add the "hundred"
     } else {
       hundredTranslated =
         hundredthDigitTranslated + " hundred " + lastTwoDigitsTranslated;
     }
   }
 
+  // This returns the trio properly translated after all the necessary concatenation
   return hundredTranslated;
 }
 
+// This is only separated into a function to avoid repeatitions and to
+// make it more readable.
 function oneThroughNineTeen(lastDigit: number) {
   let result = "";
 
@@ -276,6 +312,8 @@ function oneThroughNineTeen(lastDigit: number) {
   return result;
 }
 
+// This is only separated into a function to avoid repeatitions and to
+// make it more readable.
 function twoDigits(preLastDigit: number) {
   let result = "";
   switch (preLastDigit) {
