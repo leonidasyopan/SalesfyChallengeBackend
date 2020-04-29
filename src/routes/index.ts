@@ -6,9 +6,14 @@ routes.post("/", (request, response) => {
   // Store the natural number sent by the user
   const naturalNumber = request.query.translate;
 
+  if (isNaN(naturalNumber)) {
+    response.json({ error: "Please provide a NATURAL NUMBER for translation" });
+  }
+
   // Access the translate functions responsible for giruing out
   // how to translate the number properly
   const translated = translate(Number(naturalNumber));
+  // Clean any extra space that may result from translation
   let cleanedTranslation = translated.replace(/\s+/g, " ").trim();
 
   // Return the translation so the API can show it to the user
@@ -28,7 +33,6 @@ function translate(naturalNumber: number) {
   // Separate each digit of the number and store all of them in order
   // in a Array.
   const separatedDigits = ("" + naturalNumber).split("");
-  console.log(separatedDigits.length);
 
   // the keyWords is our list of unique words used for multiples of thousand
   // example: 1,000 (thousand) | 1,000,000 (million) | 1,000,000,000 (billion), etc
@@ -76,7 +80,6 @@ function translate(naturalNumber: number) {
     }
   }
 
-  console.log(separatedDigits.length);
   // Creates a constant prepared to store the trios of hundreds
   // This is very useful for big numbers like 1,234,567 where we
   // have 3 pairs of hundreds that we need to translate
@@ -115,27 +118,22 @@ function translate(naturalNumber: number) {
   const naturalNumberString = naturalNumber.toString();
   let occurrencesOfZero = naturalNumberString.match(/0/g);
 
+  // If this is the case (only 0 after the first character) and the number is 1000
+  // or more, it will not need to compute anything. Just add the keyword to the end
   if (
-    naturalNumber >= 100000 &&
+    naturalNumber >= 999 &&
     occurrencesOfZero?.length === naturalNumberString.length - 1 &&
-    separatedDigits.length % 3 === 0
+    naturalNumberString.length % 3 === 0
   ) {
-    console.log(occurrencesOfZero?.length);
-    console.log(naturalNumberString.length - 1);
-
     return "one hundred " + keyWords[arrayOfParts.length - 1];
   }
 
-  // If this is the case (only 0 after the first character) and the number is 1000
-  // or more, it will not need to compute anything. Just add the keyword to the end
   if (
     naturalNumber > 999 &&
     occurrencesOfZero?.length === naturalNumberString.length - 1
   ) {
     numberTranslated =
       extraDigistsTogether + " " + keyWords[arrayOfParts.length];
-    console.log(occurrencesOfZero?.length);
-    console.log(naturalNumberString.length - 1);
     return numberTranslated;
   }
 
