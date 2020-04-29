@@ -92,21 +92,16 @@ function translate(naturalNumber: number) {
 
   const extraDigistsTogether = hundredToString(extraDigits);
 
+  const naturalNumberString = naturalNumber.toString();
+  let occurrencesOfZero = naturalNumberString.match(/0/g);
+
   if (
     naturalNumber > 999 &&
-    naturalNumber % 100 === 0 &&
-    separatedDigits.length % 3 === 0
+    occurrencesOfZero?.length == separatedDigits.length - 1
   ) {
     numberTranslated =
-      wholeNumberInParts[0] + " " + keyWords[arrayOfParts.length];
-    console.log(numberTranslated + "first");
-    return numberTranslated;
-  }
-
-  if (naturalNumber > 999 && naturalNumber % 100 === 0) {
-    numberTranslated =
       extraDigistsTogether + " " + keyWords[arrayOfParts.length];
-    console.log(numberTranslated + "second");
+    console.log(numberTranslated + "first");
     return numberTranslated;
   }
 
