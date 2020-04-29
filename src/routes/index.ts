@@ -9,9 +9,10 @@ routes.post("/", (request, response) => {
   // Access the translate functions responsible for giruing out
   // how to translate the number properly
   const translated = translate(Number(naturalNumber));
+  let cleanedTranslation = translated.replace(/\s+/g, " ").trim();
 
   // Return the translation so the API can show it to the user
-  response.json({ translation: translated });
+  response.json({ translation: cleanedTranslation });
 });
 
 function translate(naturalNumber: number) {
@@ -27,13 +28,10 @@ function translate(naturalNumber: number) {
   // Separate each digit of the number and store all of them in order
   // in a Array.
   const separatedDigits = ("" + naturalNumber).split("");
+  console.log(separatedDigits.length);
 
-  // Declare and empty variable for storing the extra digits from groups
-  // of hundreds. Example, if I have 1234 or 1234234, the two pairs of
-  // 234 are going to be translated using the same pattern (trios/hundreds)
-  // but the 1 is extra, meaning it's translated differently.
-  const extraDigits = [];
-
+  // the keyWords is our list of unique words used for multiples of thousand
+  // example: 1,000 (thousand) | 1,000,000 (million) | 1,000,000,000 (billion), etc
   const keyWords = [
     "",
     "thousand",
@@ -60,6 +58,14 @@ function translate(naturalNumber: number) {
     "centillion",
   ];
 
+  // Declare and empty variable for storing the extra digits from groups
+  // of hundreds. Example, if I have 1234 or 1234234, the two pairs of
+  // 234 are going to be translated using the same pattern (trios/hundreds)
+  // but the 1 is extra, meaning it's translated differently.
+  const extraDigits = [];
+
+  // Loop through the array of separated digits to add just the first
+  // one or two extra digits to its own array
   if (separatedDigits.length > 3 && separatedDigits.length % 3) {
     const extraHouses = separatedDigits.length % 3;
     for (let i = 0; i < extraHouses; i++) {
@@ -70,8 +76,15 @@ function translate(naturalNumber: number) {
     }
   }
 
+  console.log(separatedDigits.length);
+  // Creates a constant prepared to store the trios of hundreds
+  // This is very useful for big numbers like 1,234,567 where we
+  // have 3 pairs of hundreds that we need to translate
   let arrayOfParts = [];
 
+  // Create three variables necessary to create a loop that divides the
+  // array of separated digits and stores them in an trios in a our
+  // arrayOfParts.
   let i,
     j,
     hundredHouses,
@@ -81,6 +94,9 @@ function translate(naturalNumber: number) {
     arrayOfParts.push(hundredHouses);
   }
 
+  // Here we sue the map() method to go through each of the the positions
+  // of our object and translate each trio. Storing the translations in order
+  // into this new wholeNumberInParts variable
   let wholeNumberInParts = arrayOfParts.map((item) => {
     let usefulTrio = "";
     const convertedTrio = hundredToString(item);
@@ -90,18 +106,36 @@ function translate(naturalNumber: number) {
     return usefulTrio;
   });
 
+  // This variable stores the translation for our isolated first or
+  // 2 first digits
   const extraDigistsTogether = hundredToString(extraDigits);
 
+  // This part is responsible for checking if the natural number only has 0s
+  // after the first character.
   const naturalNumberString = naturalNumber.toString();
   let occurrencesOfZero = naturalNumberString.match(/0/g);
 
   if (
+    naturalNumber >= 100000 &&
+    occurrencesOfZero?.length === naturalNumberString.length - 1 &&
+    separatedDigits.length % 3 === 0
+  ) {
+    console.log(occurrencesOfZero?.length);
+    console.log(naturalNumberString.length - 1);
+
+    return "one hundred " + keyWords[arrayOfParts.length - 1];
+  }
+
+  // If this is the case (only 0 after the first character) and the number is 1000
+  // or more, it will not need to compute anything. Just add the keyword to the end
+  if (
     naturalNumber > 999 &&
-    occurrencesOfZero?.length == separatedDigits.length - 1
+    occurrencesOfZero?.length === naturalNumberString.length - 1
   ) {
     numberTranslated =
       extraDigistsTogether + " " + keyWords[arrayOfParts.length];
-    console.log(numberTranslated + "first");
+    console.log(occurrencesOfZero?.length);
+    console.log(naturalNumberString.length - 1);
     return numberTranslated;
   }
 
