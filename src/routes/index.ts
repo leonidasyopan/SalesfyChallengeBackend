@@ -6,7 +6,7 @@ routes.get("/", (request, response) => {
   // Store the natural number sent by the user
   const naturalNumber = request.query.translate;
 
-  if (isNaN(naturalNumber)) {
+  if (isNaN(Number(naturalNumber))) {
     response.json({ error: "Please provide a NATURAL NUMBER for translation" });
   }
 
