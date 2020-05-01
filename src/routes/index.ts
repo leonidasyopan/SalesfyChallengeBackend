@@ -6,11 +6,17 @@ routes.get("/", (request, response) => {
   // Store the natural number sent by the user
   const naturalNumber = request.query.translate;
 
+  // Handle error when user types anything other than a natural number
   if (isNaN(Number(naturalNumber))) {
     response.json({ error: "Please provide a NATURAL NUMBER for translation" });
   }
 
-  // Access the translate functions responsible for giruing out
+  // Handle error when user leaves input field empty
+  if (naturalNumber === "") {
+    response.json({ error: "Please provide a NATURAL NUMBER for translation" });
+  }
+
+  // Access the translate functions responsible for figuring out
   // how to translate the number properly
   const translated = translate(Number(naturalNumber));
   // Clean any extra space that may result from translation
@@ -20,11 +26,14 @@ routes.get("/", (request, response) => {
   response.json({ translation: cleanedTranslation });
 });
 
+//
 function translate(naturalNumber: number) {
   // Creates an empty variable to store the translation in the end
   let numberTranslated = "";
 
-  // Zero is a very unique situation
+  // In case we receive only 0 as our natural number, because it's a unique
+  // keyword, we translate it right at the beginning and return the answer
+  // avoid using extra unnecessary memory.
   if (naturalNumber === 0) {
     numberTranslated = "zero";
     return numberTranslated;
@@ -62,7 +71,7 @@ function translate(naturalNumber: number) {
     "centillion",
   ];
 
-  // Declare and empty variable for storing the extra digits from groups
+  // Declare an empty variable for storing the extra digits from groups
   // of hundreds. Example, if I have 1234 or 1234234, the two pairs of
   // 234 are going to be translated using the same pattern (trios/hundreds)
   // but the 1 is extra, meaning it's translated differently.
@@ -86,7 +95,7 @@ function translate(naturalNumber: number) {
   let arrayOfParts = [];
 
   // Create three variables necessary to create a loop that divides the
-  // array of separated digits and stores them in an trios in a our
+  // array of separated digits and stores them in trios in a our
   // arrayOfParts.
   let i,
     j,
@@ -171,13 +180,13 @@ function translate(naturalNumber: number) {
   return numberTranslated;
 }
 
-// This is the most important function in the transtalion
-// it receisves an array with a trio of numbers and
+// This is the function function responsible for translating
+// the trios. It receives an array with a trio of numbers and
 // and translates it following many specific rules
 function hundredToString(arrayOfParts: Array<string>) {
   let hundredTranslated = "";
 
-  // Everything happens inside the loop
+  // Everything happens inside the loop (TODO: summary of the for loop)
   for (let i = 1; i <= arrayOfParts.length; i++) {
     // first I separate the trio and store each one in a variable
     const lastDigit = arrayOfParts[arrayOfParts.length - 1];
