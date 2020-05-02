@@ -77,9 +77,10 @@ A API está usando o pacote <a href="https://www.npmjs.com/package/cors" target=
 # Destaques sobre o raciocínio da minha resolução
 
 - Recebo e trato o número como uma _string_, assim não encontro problemas na limitação de 16 digitos que o JavaScript tem para integers.
+- As funções que fazem o "trabalho duro" da API estão separadas em uma pasta entitulada "services".
 - Disponibilizei tradução para números até "centillion" isso seria (10 na 303 potencia) - é um nome muitíssimo grande.
 - Nenhuma palavra chave única de número precisou ser listada mais de uma vez. Ou seja, a lista menciona apenas uma vez: ZERO, ONE, TWO,..., TEN, ELEVEN, TWELVE,..., TWENTY, THIRTY, ..., HUNDRED, THOUSAND, MILLION, ..., CENTILLION.
-- Para que isso fosse possível dividi os números em grupos de 3 dígitos (que chamei de trios). Cada grupo desses está na casa de uma centena (hundred) e foi traduzido conforme várias condições (devidamente comentadas no código) e depois então concatenada para formar o número completa, adicionando-se por fim as palavras chaves: thousand, million, billion, etc.
+- Para que isso fosse possível dividir os números em grupos de 3 dígitos (que chamei de trios). Cada grupo desses está na casa de uma centena (hundred) e foi traduzido conforme várias condições (devidamente comentadas no código) e depois então concatenada para formar o número completa, adicionando-se por fim as palavras chaves: thousand, million, billion, etc.
 
 Obs.: O código está comentado em cada um dos passos.
 
