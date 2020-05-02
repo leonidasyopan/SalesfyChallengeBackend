@@ -44,7 +44,6 @@ function translate(naturalNumber: string) {
   // Separate each digit of the number and store all of them in order
   // in a Array.
   const separatedDigits = ("" + naturalNumber).split("");
-  console.log(`separatedDigits: ${separatedDigits}`);
 
   // the keyWords is our list of unique words used for multiples of thousand
   // example: 1,000 (thousand) | 1,000,000 (million) | 1,000,000,000 (billion), etc
@@ -138,7 +137,10 @@ function translate(naturalNumber: string) {
     occurrencesOfZero?.length === naturalNumberString.length - 1 &&
     naturalNumberString.length % 3 === 0
   ) {
-    return "one hundred " + keyWords[arrayOfParts.length - 1];
+    const fisrtDigitTranslated = oneThroughNineTeen(Number(arrayOfParts[0][0]));
+    return (
+      fisrtDigitTranslated + " hundred " + keyWords[arrayOfParts.length - 1]
+    );
   }
 
   // Similar case to previous one, but this one is for the cases where the number
