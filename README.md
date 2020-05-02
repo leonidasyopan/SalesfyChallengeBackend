@@ -48,6 +48,12 @@ Caso esteja usando vsCode, é recomendado o uso da execução com debug, o que p
 
 # Informações sobre como executar a API e testá-la
 
+- Instale a API (junto com todas dependências):
+
+```
+yarn install
+```
+
 - Para rodar a API basta executar o seguinte commando no terminal aberto na pasta:
 
 ```
