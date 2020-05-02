@@ -1,3 +1,6 @@
+// This is the main function responsible for taking care of the whole
+// translation, it receives input of Natural Number as a String an
+// returns the translation
 export const translate = (naturalNumber: string) => {
   // Creates an empty variable to store the translation in the end
   let numberTranslated = "";
@@ -239,7 +242,9 @@ export const translate = (naturalNumber: string) => {
 function hundredToString(arrayOfParts: Array<string>) {
   let hundredTranslated = "";
 
-  // Everything happens inside the loop (TODO: summary of the for loop)
+  // Everything happens inside the loop. The loop receives the
+  // array of parts and after separating each digit and storing them
+  // in their own variables it translates each part according to need.
   for (let i = 1; i <= arrayOfParts.length; i++) {
     // first I separate the trio and store each one in a variable
     const lastDigit = arrayOfParts[arrayOfParts.length - 1];
