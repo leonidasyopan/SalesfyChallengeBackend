@@ -5,7 +5,6 @@ const routes = Router();
 routes.get("/", (request, response) => {
   // Store the natural number sent by the user
   const naturalNumber = request.query.translate;
-  console.log(naturalNumber);
 
   // Handle error when user types anything other than a natural number
   if (isNaN(Number(naturalNumber))) {
@@ -19,12 +18,9 @@ routes.get("/", (request, response) => {
     // Access the translate functions responsible for figuring out
     // how to translate the number properly
     const translated = translate(naturalNumber.toString());
-    console.log(naturalNumber.toString());
-    console.log(translated);
 
     // Clean any extra space that may result from translation
     let cleanedTranslation = translated.replace(/\s+/g, " ").trim();
-    console.log(cleanedTranslation);
 
     // Return the translation so the API can show it to the user
     response.json({ translation: cleanedTranslation });
@@ -48,6 +44,7 @@ function translate(naturalNumber: string) {
   // Separate each digit of the number and store all of them in order
   // in a Array.
   const separatedDigits = ("" + naturalNumber).split("");
+  console.log(`separatedDigits: ${separatedDigits}`);
 
   // the keyWords is our list of unique words used for multiples of thousand
   // example: 1,000 (thousand) | 1,000,000 (million) | 1,000,000,000 (billion), etc
