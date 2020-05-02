@@ -72,7 +72,7 @@ A API vai retornar um JSON com a sua tradução (no formato abaixo):
 }
 ```
 
-A API está usando o pacote <a href="https://www.linkedin.com/in/leonidasyopan/" target="_blank">Cors</a>, isso permite o acesso de qualquer Interface (frontend), desde que a mesma seja direcionada para a porta adequada (ou URL, caso já tenha sido feito o Deploy da API).
+A API está usando o pacote <a href="https://www.npmjs.com/package/cors" target="_blank">Cors</a>, isso permite o acesso de qualquer Interface (frontend), desde que a mesma seja direcionada para a porta adequada (ou URL, caso já tenha sido feito o Deploy da API).
 
 # Destaques sobre o raciocínio da minha resolução
 
