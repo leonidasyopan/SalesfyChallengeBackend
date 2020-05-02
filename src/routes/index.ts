@@ -5,36 +5,42 @@ const routes = Router();
 routes.get("/", (request, response) => {
   // Store the natural number sent by the user
   const naturalNumber = request.query.translate;
+  console.log(naturalNumber);
 
   // Handle error when user types anything other than a natural number
   if (isNaN(Number(naturalNumber))) {
     response.json({ error: "Please provide a NATURAL NUMBER for translation" });
-  }
-
-  // Handle error when user leaves input field empty
-  if (naturalNumber === "") {
+    response.end();
+  } else if (naturalNumber === "") {
+    // Handle error when user leaves input field empty
     response.json({ error: "Please provide a NATURAL NUMBER for translation" });
+    response.end();
+  } else {
+    // Access the translate functions responsible for figuring out
+    // how to translate the number properly
+    const translated = translate(naturalNumber.toString());
+    console.log(naturalNumber.toString());
+    console.log(translated);
+
+    // Clean any extra space that may result from translation
+    let cleanedTranslation = translated.replace(/\s+/g, " ").trim();
+    console.log(cleanedTranslation);
+
+    // Return the translation so the API can show it to the user
+    response.json({ translation: cleanedTranslation });
+    response.end();
   }
-
-  // Access the translate functions responsible for figuring out
-  // how to translate the number properly
-  const translated = translate(Number(naturalNumber));
-  // Clean any extra space that may result from translation
-  let cleanedTranslation = translated.replace(/\s+/g, " ").trim();
-
-  // Return the translation so the API can show it to the user
-  response.json({ translation: cleanedTranslation });
 });
 
 //
-function translate(naturalNumber: number) {
+function translate(naturalNumber: string) {
   // Creates an empty variable to store the translation in the end
   let numberTranslated = "";
 
   // In case we receive only 0 as our natural number, because it's a unique
   // keyword, we translate it right at the beginning and return the answer
   // avoid using extra unnecessary memory.
-  if (naturalNumber === 0) {
+  if (Number(naturalNumber) === 0) {
     numberTranslated = "zero";
     return numberTranslated;
   }
@@ -131,7 +137,7 @@ function translate(naturalNumber: number) {
   // or more AND the number of digits IS divided by 3 , it will not need
   // to compute anything. Just add the keyword to the end
   if (
-    naturalNumber >= 999 &&
+    Number(naturalNumber) >= 999 &&
     occurrencesOfZero?.length === naturalNumberString.length - 1 &&
     naturalNumberString.length % 3 === 0
   ) {
@@ -141,7 +147,7 @@ function translate(naturalNumber: number) {
   // Similar case to previous one, but this one is for the cases where the number
   // of digits IS NOT divided by 3
   if (
-    naturalNumber > 999 &&
+    Number(naturalNumber) > 999 &&
     occurrencesOfZero?.length === naturalNumberString.length - 1
   ) {
     numberTranslated =
@@ -151,7 +157,7 @@ function translate(naturalNumber: number) {
 
   // Here I'm checking whether the number is bigger or smaller than 999
   // If it's smaller I won't need to concatenate any keywords
-  if (naturalNumber <= 999) {
+  if (Number(naturalNumber) <= 999) {
     for (let i = 0; i < wholeNumberInParts.length; i++) {
       numberTranslated += wholeNumberInParts[i];
     }
