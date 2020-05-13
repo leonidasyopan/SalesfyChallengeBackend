@@ -2,9 +2,9 @@
   "name": "salesfy-challenge-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "js/app.js",
   "scripts": {
-    "start": "tsc && node app.js",
+    "start": "tsc && node js/app.js",
     "test": "mocha -r ts-node/register src/__tests__/**/*.spec.ts",
     "start:watch": "nodemon js/app.js",
     "compile-watch": "yarn tsc --p tsconfig.json -w"
