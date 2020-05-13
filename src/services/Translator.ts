@@ -188,7 +188,7 @@ export const translate = (naturalNumber: string) => {
   // or more AND the number of digits IS divided by 3 , it will not need
   // to compute anything. Just add the keyword to the end
   if (
-    Number(naturalNumber) >= 999 &&
+    numberConvertedFromString >= 999 &&
     occurrencesOfZero?.length === naturalNumberString.length - 1 &&
     naturalNumberString.length % 3 === 0
   ) {
@@ -201,7 +201,7 @@ export const translate = (naturalNumber: string) => {
   // Similar case to previous one, but this one is for the cases where the number
   // of digits IS NOT divided by 3
   if (
-    Number(naturalNumber) > 999 &&
+    numberConvertedFromString > 999 &&
     occurrencesOfZero?.length === naturalNumberString.length - 1
   ) {
     numberTranslated =
@@ -211,7 +211,7 @@ export const translate = (naturalNumber: string) => {
 
   // Here I'm checking whether the number is bigger or smaller than 999
   // If it's smaller I won't need to concatenate any keywords
-  if (Number(naturalNumber) <= 999) {
+  if (numberConvertedFromString <= 999) {
     for (let i = 0; i < wholeNumberInParts.length; i++) {
       numberTranslated += wholeNumberInParts[i];
     }
