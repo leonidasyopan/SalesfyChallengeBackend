@@ -236,9 +236,12 @@ export const translate = (naturalNumber: string) => {
   return numberTranslated;
 };
 
-// This is the function function responsible for translating
-// the trios. It receives an array with a trio of numbers and
-// and translates it following many specific rules
+/**
+ * This is the function function responsible for translating
+ * the trios. It receives an array with a trio of numbers and
+ * and translates it following many specific rules
+ * @param arrayOfParts
+ */
 function hundredToString(arrayOfParts: Array<string>) {
   let hundredTranslated = "";
 
@@ -308,8 +311,11 @@ function hundredToString(arrayOfParts: Array<string>) {
   return hundredTranslated;
 }
 
-// This is only separated into a function to avoid repeatitions and to
-// make it more readable.
+/**
+ * This is only separated into a function to avoid repeatitions and to
+ * make it more readable.
+ * @param lastDigit
+ */
 function oneThroughNineTeen(lastDigit: number) {
   let result = "";
 
@@ -379,8 +385,11 @@ function oneThroughNineTeen(lastDigit: number) {
   return result;
 }
 
-// This is only separated into a function to avoid repeatitions and to
-// make it more readable.
+/**
+ * This is only separated into a function to avoid repeatitions and to
+ * make it more readable.
+ * @param preLastDigit
+ */
 function twoDigits(preLastDigit: number) {
   let result = "";
   switch (preLastDigit) {
