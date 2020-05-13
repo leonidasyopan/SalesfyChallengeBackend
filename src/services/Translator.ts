@@ -1,6 +1,7 @@
-// This is the main function responsible for taking care of the whole
-// translation, it receives input of Natural Number as a String an
-// returns the translation
+/**
+ * Function to tranlate any natural number to English
+ * @param naturalNumber
+ */
 export const translate = (naturalNumber: string) => {
   // Creates an empty variable to store the translation in the end
   let numberTranslated = "";
