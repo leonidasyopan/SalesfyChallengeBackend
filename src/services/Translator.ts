@@ -184,11 +184,13 @@ export const translate = (naturalNumber: string) => {
     regexForSequenceOfMultipleZeros
   );
 
+  const LIMIT_FOR_TRIO_SEPARATION = 999;
+
   // If this is the case (only 0 after the first character) AND the number is 1000
   // or more AND the number of digits IS divided by 3 , it will not need
   // to compute anything. Just add the keyword to the end
   if (
-    numberConvertedFromString >= 999 &&
+    numberConvertedFromString >= LIMIT_FOR_TRIO_SEPARATION &&
     occurrencesOfZero?.length === naturalNumberString.length - 1 &&
     naturalNumberString.length % 3 === 0
   ) {
@@ -201,7 +203,7 @@ export const translate = (naturalNumber: string) => {
   // Similar case to previous one, but this one is for the cases where the number
   // of digits IS NOT divided by 3
   if (
-    numberConvertedFromString > 999 &&
+    numberConvertedFromString > LIMIT_FOR_TRIO_SEPARATION &&
     occurrencesOfZero?.length === naturalNumberString.length - 1
   ) {
     numberTranslated =
@@ -211,7 +213,7 @@ export const translate = (naturalNumber: string) => {
 
   // Here I'm checking whether the number is bigger or smaller than 999
   // If it's smaller I won't need to concatenate any keywords
-  if (numberConvertedFromString <= 999) {
+  if (numberConvertedFromString <= LIMIT_FOR_TRIO_SEPARATION) {
     for (let i = 0; i < wholeNumberInParts.length; i++) {
       numberTranslated += wholeNumberInParts[i];
     }
