@@ -5,7 +5,7 @@ import routes from "./routes";
 const app = express();
 
 const PORT = process.env.PORT || 3333;
-
+app.set("port", PORT);
 // Cors is reponsible for giving access to interface clients
 // so they can use this API
 app.use(cors());
