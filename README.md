@@ -27,7 +27,7 @@
 Para instalação, rodar o comando:
 
 ```
-_\$ npm install
+_\$ yarn
 ```
 
 Para rodar corretamente com maior produtividade para desenvolvimento, rode em terminais diferentes os seguintes comandos:
