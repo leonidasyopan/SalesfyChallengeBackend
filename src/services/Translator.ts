@@ -10,10 +10,7 @@ export const translate = (naturalNumber: string) => {
   let numberTranslated = "";
   const numberConvertedFromString = Number(naturalNumber);
 
-  if (numberConvertedFromString === 0) {
-    numberTranslated = "zero";
-    return numberTranslated;
-  }
+  if (numberConvertedFromString === 0) return "zero";
 
   // Separate each digit of the number and store all of them in order
   // in a Array.
