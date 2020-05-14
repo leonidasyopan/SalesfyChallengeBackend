@@ -25,19 +25,18 @@ export const translate = (naturalNumber: string) => {
 
   const mainDigits = mainDigitsExtractor(separatedDigits);
 
-  let arrayOfTrios = arrayOfTriosCreator(mainDigits);
+  const arrayOfTrios = arrayOfTriosCreator(mainDigits);
 
-  let arrayOfTriosTranslated = translatorOfHundreds(arrayOfTrios);
+  const arrayOfTriosTranslated = translatorOfHundreds(arrayOfTrios);
 
-  const extraDigistsTogether = hundredToString(extraDigits);
+  const extraDigitsTranslated = hundredToString(extraDigits);
 
   // This part is responsible for checking if the natural number only has 0s
   // after the first character.
-  const naturalNumberString = naturalNumber.toString();
+  // const naturalNumberString = naturalNumber.toString();
   const regexForSequenceOfMultipleZeros = /0/g;
-  let occurrencesOfZero = naturalNumberString.match(
-    regexForSequenceOfMultipleZeros
-  );
+  let occurrencesOfZero = naturalNumber.match(regexForSequenceOfMultipleZeros);
+  console.log(occurrencesOfZero);
 
   const LIMIT_FOR_TRIO_SEPARATION = 999;
 
@@ -46,8 +45,8 @@ export const translate = (naturalNumber: string) => {
   // to compute anything. Just add the keyword to the end
   if (
     numberConvertedFromString >= LIMIT_FOR_TRIO_SEPARATION &&
-    occurrencesOfZero?.length === naturalNumberString.length - 1 &&
-    naturalNumberString.length % 3 === 0
+    occurrencesOfZero?.length === naturalNumber.length - 1 &&
+    naturalNumber.length % 3 === 0
   ) {
     const fisrtDigitTranslated = oneThroughNineTeen(Number(arrayOfTrios[0][0]));
     return (
@@ -59,10 +58,10 @@ export const translate = (naturalNumber: string) => {
   // of digits IS NOT divided by 3
   if (
     numberConvertedFromString > LIMIT_FOR_TRIO_SEPARATION &&
-    occurrencesOfZero?.length === naturalNumberString.length - 1
+    occurrencesOfZero?.length === naturalNumber.length - 1
   ) {
     numberTranslated =
-      extraDigistsTogether + " " + keyWords[arrayOfTrios.length];
+      extraDigitsTranslated + " " + keyWords[arrayOfTrios.length];
     return numberTranslated;
   }
 
@@ -75,9 +74,9 @@ export const translate = (naturalNumber: string) => {
     // ELSE, I will need to add the keywords to the trios of translated numbers
   } else {
     numberTranslated +=
-      extraDigistsTogether.length == 0
+      extraDigitsTranslated.length == 0
         ? ""
-        : extraDigistsTogether + " " + keyWords[arrayOfTrios.length] + " ";
+        : extraDigitsTranslated + " " + keyWords[arrayOfTrios.length] + " ";
 
     // this is the loop that allows adding as many keywords as necssary.
     for (let i = 0; i < arrayOfTriosTranslated.length; i++) {
