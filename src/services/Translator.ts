@@ -1,6 +1,8 @@
 import { oneThroughNineTeen } from "./UniqueNamesOfNumbers";
 import { hundredToString } from "./TranslatorOfHundreds";
+import { digitSeparator } from "../utils/digitSeparator";
 import { keyWords } from "./KeyWords";
+import { extraDigitsExtractor } from "./ExtraDigits";
 
 /**
  * Function to tranlate any natural number to English
@@ -12,9 +14,7 @@ export const translate = (naturalNumber: string) => {
 
   if (numberConvertedFromString === 0) return "zero";
 
-  // Separate each digit of the number and store all of them in order
-  // in a Array.
-  const separatedDigits = ("" + naturalNumber).split("");
+  const separatedDigits = digitSeparator(naturalNumber);
 
   // Declare an empty variable for storing the extra digits from groups
   // of hundreds. Example, if I have 1234 or 1234234, the two pairs of
@@ -128,7 +128,6 @@ export const translate = (naturalNumber: string) => {
       }
     }
   }
-  // Here I return the complete translated word after all
-  // the necessary concatenation
+
   return numberTranslated;
 };
