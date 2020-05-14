@@ -27,21 +27,8 @@ export const translate = (naturalNumber: string) => {
 
   let arrayOfTrios = arrayOfTriosCreator(mainDigits);
 
-  // Here we sue the map() method to go through each of the the positions
-  // of our object and translate each trio. Storing the translations in order
-  // into this new wholeNumberInParts variable
-  let wholeNumberInParts = translatorOfHundreds(arrayOfTrios);
-  // arrayOfTrios.map((item) => {
-  //   let usefulTrio = "";
-  //   const convertedTrio = hundredToString(item);
-  //   if (convertedTrio !== " hundred ") {
-  //     usefulTrio = convertedTrio;
-  //   }
-  //   return usefulTrio;
-  // });
+  let arrayOfTriosTranslated = translatorOfHundreds(arrayOfTrios);
 
-  // This variable stores the translation for our isolated first or
-  // 2 first digits
   const extraDigistsTogether = hundredToString(extraDigits);
 
   // This part is responsible for checking if the natural number only has 0s
@@ -82,8 +69,8 @@ export const translate = (naturalNumber: string) => {
   // Here I'm checking whether the number is bigger or smaller than 999
   // If it's smaller I won't need to concatenate any keywords
   if (numberConvertedFromString <= LIMIT_FOR_TRIO_SEPARATION) {
-    for (let i = 0; i < wholeNumberInParts.length; i++) {
-      numberTranslated += wholeNumberInParts[i];
+    for (let i = 0; i < arrayOfTriosTranslated.length; i++) {
+      numberTranslated += arrayOfTriosTranslated[i];
     }
     // ELSE, I will need to add the keywords to the trios of translated numbers
   } else {
@@ -93,12 +80,15 @@ export const translate = (naturalNumber: string) => {
         : extraDigistsTogether + " " + keyWords[arrayOfTrios.length] + " ";
 
     // this is the loop that allows adding as many keywords as necssary.
-    for (let i = 0; i < wholeNumberInParts.length; i++) {
-      if (wholeNumberInParts[i] === "" || wholeNumberInParts.length == 0) {
+    for (let i = 0; i < arrayOfTriosTranslated.length; i++) {
+      if (
+        arrayOfTriosTranslated[i] === "" ||
+        arrayOfTriosTranslated.length == 0
+      ) {
         numberTranslated += "";
       } else {
         numberTranslated +=
-          wholeNumberInParts[i] +
+          arrayOfTriosTranslated[i] +
           " " +
           keyWords[arrayOfTrios.length - (i + 1)] +
           " ";
