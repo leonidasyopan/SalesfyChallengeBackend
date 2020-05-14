@@ -16,7 +16,7 @@ routes.get("/", (request, response) => {
     naturalNumber === undefined
   ) {
     return response.json({
-      error: "Forneça um número natural para tradução.",
+      error: "Testing changes.",
     });
   }
 

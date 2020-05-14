@@ -1,8 +1,13 @@
 import { oneThroughNineTeen } from "./UniqueNamesOfNumbers";
-import { hundredToString } from "./TranslatorOfHundreds";
+import { hundredToString } from "./HundredToString";
 import { digitSeparator } from "../utils/digitSeparator";
 import { keyWords } from "./KeyWords";
-import { extraDigitsExtractor } from "./ExtraDigits";
+import {
+  extraDigitsExtractor,
+  mainDigitsExtractor,
+  arrayOfTriosCreator,
+} from "./DigitsOrganizor";
+import { translatorOfHundreds } from "./TranslatorOfHundreds";
 
 /**
  * Function to tranlate any natural number to English
@@ -16,52 +21,24 @@ export const translate = (naturalNumber: string) => {
 
   const separatedDigits = digitSeparator(naturalNumber);
 
-  // Declare an empty variable for storing the extra digits from groups
-  // of hundreds. Example, if I have 1234 or 1234234, the two pairs of
-  // 234 are going to be translated using the same pattern (trios/hundreds)
-  // but the 1 is extra, meaning it's translated differently.
-  const extraDigits = [];
+  const extraDigits = extraDigitsExtractor(separatedDigits);
 
-  // Loop through the array of separated digits to add just the first
-  // one or two extra digits to its own array
-  if (separatedDigits.length > 3 && separatedDigits.length % 3) {
-    const extraHouses = separatedDigits.length % 3;
-    for (let i = 0; i < extraHouses; i++) {
-      extraDigits.push(separatedDigits[i]);
-    }
-    for (let i = 0; i < extraHouses; i++) {
-      separatedDigits.shift();
-    }
-  }
+  const mainDigits = mainDigitsExtractor(separatedDigits);
 
-  // Creates a constant prepared to store the trios of hundreds
-  // This is very useful for big numbers like 1,234,567 where we
-  // have 3 pairs of hundreds that we need to translate
-  let arrayOfParts = [];
-
-  // Create three variables necessary to create a loop that divides the
-  // array of separated digits and stores them in trios in a our
-  // arrayOfParts.
-  let i,
-    j,
-    hundredHouses,
-    parts = 3;
-  for (i = 0, j = separatedDigits.length; i < j; i += parts) {
-    hundredHouses = separatedDigits.slice(i, i + parts);
-    arrayOfParts.push(hundredHouses);
-  }
+  let arrayOfTrios = arrayOfTriosCreator(mainDigits);
 
   // Here we sue the map() method to go through each of the the positions
   // of our object and translate each trio. Storing the translations in order
   // into this new wholeNumberInParts variable
-  let wholeNumberInParts = arrayOfParts.map((item) => {
-    let usefulTrio = "";
-    const convertedTrio = hundredToString(item);
-    if (convertedTrio !== " hundred ") {
-      usefulTrio = convertedTrio;
-    }
-    return usefulTrio;
-  });
+  let wholeNumberInParts = translatorOfHundreds(arrayOfTrios);
+  // arrayOfTrios.map((item) => {
+  //   let usefulTrio = "";
+  //   const convertedTrio = hundredToString(item);
+  //   if (convertedTrio !== " hundred ") {
+  //     usefulTrio = convertedTrio;
+  //   }
+  //   return usefulTrio;
+  // });
 
   // This variable stores the translation for our isolated first or
   // 2 first digits
@@ -85,9 +62,9 @@ export const translate = (naturalNumber: string) => {
     occurrencesOfZero?.length === naturalNumberString.length - 1 &&
     naturalNumberString.length % 3 === 0
   ) {
-    const fisrtDigitTranslated = oneThroughNineTeen(Number(arrayOfParts[0][0]));
+    const fisrtDigitTranslated = oneThroughNineTeen(Number(arrayOfTrios[0][0]));
     return (
-      fisrtDigitTranslated + " hundred " + keyWords[arrayOfParts.length - 1]
+      fisrtDigitTranslated + " hundred " + keyWords[arrayOfTrios.length - 1]
     );
   }
 
@@ -98,7 +75,7 @@ export const translate = (naturalNumber: string) => {
     occurrencesOfZero?.length === naturalNumberString.length - 1
   ) {
     numberTranslated =
-      extraDigistsTogether + " " + keyWords[arrayOfParts.length];
+      extraDigistsTogether + " " + keyWords[arrayOfTrios.length];
     return numberTranslated;
   }
 
@@ -113,7 +90,7 @@ export const translate = (naturalNumber: string) => {
     numberTranslated +=
       extraDigistsTogether.length == 0
         ? ""
-        : extraDigistsTogether + " " + keyWords[arrayOfParts.length] + " ";
+        : extraDigistsTogether + " " + keyWords[arrayOfTrios.length] + " ";
 
     // this is the loop that allows adding as many keywords as necssary.
     for (let i = 0; i < wholeNumberInParts.length; i++) {
@@ -123,7 +100,7 @@ export const translate = (naturalNumber: string) => {
         numberTranslated +=
           wholeNumberInParts[i] +
           " " +
-          keyWords[arrayOfParts.length - (i + 1)] +
+          keyWords[arrayOfTrios.length - (i + 1)] +
           " ";
       }
     }
