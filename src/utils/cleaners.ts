@@ -17,3 +17,13 @@ export const commasAndPeriodsCleaner = (naturalNumber: string) => {
 
   return naturalNumber.replace(regexForCommasAndPeriods, "");
 };
+
+/**
+ * Function to remove commas and periods from a number
+ * @param naturalNumber
+ */
+export const commasCleaner = (naturalNumber: string) => {
+  const regexForCommas = /,/g;
+
+  return naturalNumber.replace(regexForCommas, "");
+};

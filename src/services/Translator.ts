@@ -35,7 +35,10 @@ export const translate = (naturalNumber: string) => {
    * This is taking into account the occurence of big numbers
    * with only ZEROS after the first digit.
    */
-  if (occurrencesOfZero?.length === naturalNumber.length - 1) {
+  if (
+    occurrencesOfZero?.length === naturalNumber.length - 1 &&
+    separatedDigits.length > 3
+  ) {
     const longZerosTranslation = translateSequenceOfOnlyZeros(
       occurrencesOfZero,
       naturalNumber,
